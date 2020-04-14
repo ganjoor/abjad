@@ -1,10 +1,14 @@
 <template>
-  <div id="app">
-    <img alt="محاسبه‌گر ابجد" src="./assets/logo.png">
-    <input v-model="inputString" placeholder="متن را اینجا وارد کنید" size="100" />
-    <p>{{ calc(inputString).n }}</p>
-    <p>{{ calc(inputString).desc }}</p>
-  </div>
+    <div id="app">
+        <div align="center">
+            <img alt="محاسبه‌گر ابجد" src="./assets/logo.png">
+        </div>
+        <div align="center">
+            <input v-model="inputString" placeholder="متن را اینجا وارد کنید" size="50" />
+            <p>{{ calc(inputString).n }}</p>
+            <p>{{ calc(inputString).desc }}</p>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -133,11 +137,11 @@ export default {
 </script>
 
 <style>
-* {
-  direction: rtl;
-}
+    * {
+        direction: rtl;
+        font-family: 'Samim';
+    }
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
