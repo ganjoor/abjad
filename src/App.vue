@@ -7,6 +7,7 @@
             <input v-model="inputString" placeholder="متن را اینجا وارد کنید" size="50" />
             <p>{{ calc(inputString).n }}</p>
             <p>{{ calc(inputString).desc }}</p>
+            <p v-if="returnUrl != null"><a :href="returnUrl">برگشت</a></p>
         </div>
     </div>
 </template>
@@ -15,10 +16,12 @@
 export default {
   name: "App",
   data: () => ({
-    inputString: "",
+      inputString: "",
+      returnUrl: null
   }),
   mounted(){
-      this.inputString  = this.$route.query.q;
+      this.inputString = this.$route.query.q;
+      this.returnUrl = this.$route.query.r;
   },
   methods: {
     
