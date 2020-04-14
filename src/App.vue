@@ -52,6 +52,7 @@ export default {
             n = 5;
             break;
           case "و":
+          case "ؤ":
             n = 6;
             break;
           case "ز":
@@ -65,6 +66,7 @@ export default {
             break;
           case "ی":
           case "ي":
+          case "ئ":
             n = 10;
             break;
           case "ک":
