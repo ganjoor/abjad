@@ -11,9 +11,8 @@
         <a :href="returnUrl">برگشت</a>
       </p>
     </div>
-    
+
     <div v-if="rev" align="center">
-      
       <p>
         <textarea
           v-model="numbersString"
@@ -25,6 +24,11 @@
       </p>
       <p>{{ revcalc(numbersString).str }}</p>
       <p>{{ revcalc(numbersString).desc }}</p>
+      <p>
+        <small>
+          <a href="http://blog.ganjoor.net/1399/04/20/rev-abjad/">تبدیل معکوس چیست؟</a>
+        </small>
+      </p>
     </div>
 
     <button type="button" @click="onRev()">{{revString}}</button>
@@ -38,7 +42,7 @@ export default {
     inputString: "",
     returnUrl: null,
     rev: false,
-    revString: 'تبدیل معکوس',
+    revString: "تبدیل معکوس",
     numbersString: ""
   }),
   mounted() {
@@ -48,7 +52,7 @@ export default {
   methods: {
     calc(str) {
       var ret = { n: 0, desc: "" };
-      if(str == null){
+      if (str == null) {
         return ret;
       }
 
@@ -163,7 +167,7 @@ export default {
     },
     revcalc(str) {
       var ret = { str: "", desc: "" };
-      if(str == null){
+      if (str == null) {
         return ret;
       }
 
@@ -400,12 +404,11 @@ export default {
       }
       return ret;
     },
-    onRev(){
-      if(this.rev){
-        this.revString = 'تبدیل معکوس';
-      }
-      else{
-        this.revString = "تبدیل معمولی"
+    onRev() {
+      if (this.rev) {
+        this.revString = "تبدیل معکوس";
+      } else {
+        this.revString = "تبدیل معمولی";
       }
       this.rev = !this.rev;
     }
@@ -424,5 +427,8 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+a {
+  text-decoration: none;
 }
 </style>
