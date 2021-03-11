@@ -26,7 +26,7 @@
       <p>{{ revcalc(numbersString).desc }}</p>
       <p>
         <small>
-          <a href="http://blog.ganjoor.net/1399/04/20/rev-abjad/">تبدیل معکوس چیست؟</a>
+          <a href="http://blog.ganjoor.net/1399/04/20/rev-abjad/">تبدیل سلسله عدد چیست؟</a>
         </small>
       </p>
     </div>
@@ -42,7 +42,7 @@ export default {
     inputString: "",
     returnUrl: null,
     rev: false,
-    revString: "تبدیل معکوس",
+    revString: "تبدیل سلسله عدد",
     numbersString: ""
   }),
   mounted() {
