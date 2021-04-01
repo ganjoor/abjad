@@ -4,7 +4,11 @@
       <img alt="محاسبه‌گر ابجد" src="./assets/logo.png" />
     </div>
     <div v-if="!rev" align="center">
-      <input v-model="inputString" placeholder="متن را اینجا وارد کنید" size="50" />
+      <input
+        v-model="inputString"
+        placeholder="متن را اینجا وارد کنید"
+        size="50"
+      />
       <p>{{ calc(inputString).n }}</p>
       <p>{{ calc(inputString).desc }}</p>
       <p v-if="returnUrl != null">
@@ -19,19 +23,21 @@
           placeholder="برای تبدیل سطرهای عدد به حرف سطور را در کادر زیر وارد کنید"
           cols="50"
           rows="4"
-          style="direction:ltr"
+          style="direction: ltr"
         ></textarea>
       </p>
       <p>{{ revcalc(numbersString).str }}</p>
       <p>{{ revcalc(numbersString).desc }}</p>
       <p>
         <small>
-          <a href="http://blog.ganjoor.net/1399/04/20/rev-abjad/">تبدیل سلسله عدد چیست؟</a>
+          <a href="http://blog.ganjoor.net/1399/04/20/rev-abjad/"
+            >تبدیل سلسله عدد چیست؟</a
+          >
         </small>
       </p>
     </div>
 
-    <button type="button" @click="onRev()">{{revString}}</button>
+    <button type="button" @click="onRev()">{{ revString }}</button>
   </div>
 </template>
 
@@ -43,7 +49,7 @@ export default {
     returnUrl: null,
     rev: false,
     revString: "تبدیل سلسله عدد",
-    numbersString: ""
+    numbersString: "",
   }),
   mounted() {
     this.inputString = this.$route.query.q;
@@ -406,13 +412,13 @@ export default {
     },
     onRev() {
       if (this.rev) {
-        this.revString = "تبدیل معکوس";
+        this.revString = "تبدیل سلسله عدد";
       } else {
         this.revString = "تبدیل معمولی";
       }
       this.rev = !this.rev;
-    }
-  }
+    },
+  },
 };
 </script>
 
