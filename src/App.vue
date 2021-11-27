@@ -5,12 +5,15 @@
     </div>
     <div v-if="!rev" align="center">
       <input
+        class="text-input"
         v-model="inputString"
         placeholder="متن را اینجا وارد کنید"
         size="50"
       />
-      <p>{{ calc(inputString).n }}</p>
-      <p>{{ calc(inputString).desc }}</p>
+      <div class="result-section">
+        <p>{{ calc(inputString).n }}</p>
+        <p>{{ calc(inputString).desc }}</p>
+      </div>
       <p v-if="returnUrl != null">
         <a :href="returnUrl">برگشت</a>
       </p>
@@ -19,6 +22,7 @@
     <div v-if="rev" align="center">
       <p>
         <textarea
+          class="textarea-input"
           v-model="numbersString"
           placeholder="برای تبدیل سطرهای عدد به حرف سطور را در کادر زیر وارد کنید"
           cols="50"
@@ -26,8 +30,10 @@
           style="direction: ltr"
         ></textarea>
       </p>
-      <p>{{ revcalc(numbersString).str }}</p>
-      <p>{{ revcalc(numbersString).desc }}</p>
+      <div class="result-section">
+        <p>{{ revcalc(numbersString).str }}</p>
+        <p>{{ revcalc(numbersString).desc }}</p>
+      </div>
       <p>
         <small>
           <a href="http://blog.ganjoor.net/1399/04/20/rev-abjad/"
@@ -37,7 +43,7 @@
       </p>
     </div>
 
-    <button type="button" @click="onRev()">{{ revString }}</button>
+    <button type="button" class="rev-button" @click="onRev()">{{ revString }}</button>
   </div>
 </template>
 
