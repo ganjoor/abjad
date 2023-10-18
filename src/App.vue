@@ -96,6 +96,7 @@ export default {
             n = 6;
             break;
           case "ز":
+          case "ژ":
             n = 7;
             break;
           case "ح":
