@@ -11,8 +11,13 @@
         size="50"
       />
       <div class="result-section">
-        <p>{{ calc(inputString).n }}</p>
+        <p>{{ persianizeNumerals(calc(inputString).n.toString()) }}</p>
         <p>{{ calc(inputString).desc }}</p>
+      </div>
+      <div class="count-section" v-if="inputString != null">
+        <p>شمار نویسه‌ها (از {{ persianizeNumerals(cleanCharCount.toString()) }}):</p>
+        <div id="letters-stat-sourceStringContainer"></div>
+        <div id="letters-stat-resultTableContainer" class="charContainer"></div>
       </div>
       <p v-if="returnUrl != null">
         <a :href="returnUrl">برگشت</a>
@@ -34,6 +39,7 @@
         <p>{{ revcalc(numbersString).str }}</p>
         <p>{{ revcalc(numbersString).desc }}</p>
       </div>
+
       <p>
         <small>
           <a href="http://blog.ganjoor.net/1399/04/20/rev-abjad/"
@@ -43,7 +49,9 @@
       </p>
     </div>
 
-    <button type="button" class="rev-button" @click="onRev()">{{ revString }}</button>
+    <button type="button" class="rev-button" @click="onRev()">
+      {{ revString }}
+    </button>
   </div>
 </template>
 
@@ -56,17 +64,143 @@ export default {
     rev: false,
     revString: "تبدیل سلسله عدد",
     numbersString: "",
+    cleanCharCount: 0,
   }),
   mounted() {
     this.inputString = this.$route.query.q;
     this.returnUrl = this.$route.query.r;
   },
   methods: {
+    countAndSortCharacters(inputString) {
+      if (inputString == null) return;
+      // Initialize an empty map to store character counts
+      const charCountMap = new Map();
+
+      // Iterate through each character in the input string
+      for (const char of inputString) {
+        if (char == " ") continue;
+        // Check if the character is already in the map
+        if (charCountMap.has(char)) {
+          // If yes, increment the count
+          charCountMap.set(char, charCountMap.get(char) + 1);
+        } else {
+          // If not, add the character to the map with a count of 1
+          charCountMap.set(char, 1);
+        }
+      }
+
+      // Sort the map by character counts in descending order
+      const sortedCharCount = new Map(
+        [...charCountMap.entries()].sort((a, b) => b[1] - a[1])
+      );
+
+      // Return the sorted map
+      return sortedCharCount;
+    },
+
+    countAndDisplayCharacters(inputString, resultTableId, sourceStringId) {
+      const result = this.countAndSortCharacters(inputString);
+
+      const container = document.getElementById(resultTableId);
+      if (container == null) return;
+      container.innerHTML = "";
+
+      let highlightedCharDiv = null; // To keep track of the previously clicked charDiv
+
+      // Populate the row with cells for each character and its frequency
+      var first = true;
+      result.forEach((count, char) => {
+        const charDiv = document.createElement("div");
+        charDiv.textContent = `${char}: ${this.persianizeNumerals(
+          count.toString()
+        )}`;
+        charDiv.className = "charCell";
+
+        // Add a click event listener to highlight the character in the source string
+        charDiv.addEventListener("click", (event) => {
+          if (event.target.classList.contains("charCell")) {
+            // Roll back the color of the previously clicked charDiv
+            if (highlightedCharDiv) {
+              highlightedCharDiv.classList.remove("background-red");
+            }
+
+            const sourceStringDiv = document.getElementById(sourceStringId);
+            const highlightedString = this.highlightCharacter(
+              inputString,
+              char,
+              sourceStringDiv.innerHTML
+            );
+            sourceStringDiv.innerHTML = highlightedString;
+
+            // Toggle the color of the clicked charDiv
+            charDiv.classList.toggle("background-red");
+            highlightedCharDiv = charDiv; // Update the reference to the clicked charDiv
+          }
+        });
+
+        // Highlight the first character by default
+        if (first) {
+          first = false;
+          charDiv.classList.add("background-red");
+          highlightedCharDiv = charDiv;
+          const sourceStringDiv = document.getElementById(sourceStringId);
+          const highlightedString = this.highlightCharacter(
+            inputString,
+            char,
+            sourceStringDiv.innerHTML
+          );
+          sourceStringDiv.innerHTML = highlightedString;
+        }
+
+        // Append the div to the container
+        container.appendChild(charDiv);
+      });
+    },
+    persianizeNumerals(value) {
+      return value
+        .replace(/0/gi, "۰")
+        .replace(/1/gi, "۱")
+        .replace(/2/gi, "۲")
+        .replace(/3/gi, "۳")
+        .replace(/4/gi, "۴")
+        .replace(/5/gi, "۵")
+        .replace(/6/gi, "۶")
+        .replace(/7/gi, "۷")
+        .replace(/8/gi, "۸")
+        .replace(/9/gi, "۹");
+    },
+    highlightCharacter(previousHighlightedString, charToHighlight) {
+      // Escape special characters in the regex pattern
+      const escapedChar = charToHighlight.replace(
+        /[.*+?^${}()|[\]\\]/g,
+        "\\$&"
+      );
+
+      // Create a regular expression to match the specified character
+      const regex = new RegExp(escapedChar, "g");
+
+      // Remove previous highlighting
+      const unhighlightedString = previousHighlightedString.replace(
+        /<span style="color: red;">|<\/span>/g,
+        ""
+      );
+
+      // Replace the matched character with the HTML code for red color
+      const highlightedString = unhighlightedString.replace(
+        regex,
+        `<span style="color: red;">$&</span>`
+      );
+
+      return highlightedString;
+    },
     calc(str) {
       var ret = { n: 0, desc: "" };
       if (str == null) {
         return ret;
       }
+
+      var cleanStr = "";
+      var charCount = 0;
 
       for (var i = 0; i < str.length; i++) {
         var n = 0;
@@ -167,15 +301,27 @@ export default {
           case "غ":
             n = 1000;
             break;
+          case " ":
+            cleanStr += str.charAt(i);
+            break;
         }
         if (n != 0) {
           if (ret.desc != "") {
             ret.desc += " + ";
           }
-          ret.desc += "[" + str.charAt(i) + " = " + n.toString() + "]";
+          ret.desc += "[" + str.charAt(i) + " = " + this.persianizeNumerals(n.toString()) + "]";
           ret.n += n;
+
+          cleanStr += str.charAt(i);
+          charCount++;
         }
       }
+      this.cleanCharCount = charCount;
+      this.countAndDisplayCharacters(
+        cleanStr,
+        "letters-stat-resultTableContainer",
+        "letters-stat-sourceStringContainer"
+      );
       return ret;
     },
     revcalc(str) {
@@ -417,6 +563,7 @@ export default {
       }
       return ret;
     },
+
     onRev() {
       if (this.rev) {
         this.revString = "تبدیل سلسله عدد";
@@ -443,5 +590,26 @@ export default {
 }
 a {
   text-decoration: none;
+}
+.charContainer {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+}
+
+.charCell {
+  border: 1px solid black;
+  padding: 8px;
+  margin: 4px;
+  cursor: pointer;
+}
+
+.count-section {
+  border: solid 1px;
+  display: table-row;
+}
+
+.background-red{
+  background-color: red;
 }
 </style>
