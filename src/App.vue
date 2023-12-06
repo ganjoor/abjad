@@ -15,13 +15,21 @@
         <p>{{ calc(inputString).desc }}</p>
       </div>
       <div class="count-section" v-if="cleanCharCount != 0">
-        <p>شمار نویسه‌ها (از {{ persianizeNumerals(cleanCharCount.toString()) }} نویسه):</p>
+        <p>
+          شمار نویسه‌ها (از
+          {{ persianizeNumerals(cleanCharCount.toString()) }} نویسه):
+        </p>
         <div id="letters-stat-sourceStringContainer"></div>
         <div id="letters-stat-resultTableContainer" class="charContainer"></div>
       </div>
-      <p v-if="returnUrl != null">
-        <a :href="returnUrl">برگشت</a>
-      </p>
+      <button
+        v-if="returnUrl != null"
+        type="button"
+        class="rev-button"
+        @click="returnToReturnUrl"
+      >
+        برگشت
+      </button>
     </div>
 
     <div v-if="rev" align="center">
@@ -49,9 +57,9 @@
       </p>
     </div>
 
-    <button type="button" class="rev-button" @click="onRev()">
+    <a href="#" class="rev-a" @click="onRev()">
       {{ revString }}
-    </button>
+    </a>
   </div>
 </template>
 
@@ -71,6 +79,9 @@ export default {
     this.returnUrl = this.$route.query.r;
   },
   methods: {
+    returnToReturnUrl() {
+      window.location.href = this.returnUrl;
+    },
     countAndSortCharacters(inputString) {
       if (inputString == null) return;
       // Initialize an empty map to store character counts
@@ -309,7 +320,12 @@ export default {
           if (ret.desc != "") {
             ret.desc += " + ";
           }
-          ret.desc += "[" + str.charAt(i) + " = " + this.persianizeNumerals(n.toString()) + "]";
+          ret.desc +=
+            "[" +
+            str.charAt(i) +
+            " = " +
+            this.persianizeNumerals(n.toString()) +
+            "]";
           ret.n += n;
 
           cleanStr += str.charAt(i);
@@ -591,6 +607,9 @@ export default {
 a {
   text-decoration: none;
 }
+.rev-a{
+  font-size: small;
+}
 .charContainer {
   display: flex;
   flex-wrap: wrap;
@@ -609,7 +628,7 @@ a {
   display: table-row;
 }
 
-.background-red{
+.background-red {
   background-color: red;
 }
 </style>
