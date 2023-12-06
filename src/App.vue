@@ -14,7 +14,7 @@
         <p>{{ persianizeNumerals(calc(inputString).n.toString()) }}</p>
         <p>{{ calc(inputString).desc }}</p>
       </div>
-      <div class="count-section" v-if="inputString != null">
+      <div class="count-section" v-if="cleanCharCount != 0">
         <p>شمار نویسه‌ها (از {{ persianizeNumerals(cleanCharCount.toString()) }} نویسه):</p>
         <div id="letters-stat-sourceStringContainer"></div>
         <div id="letters-stat-resultTableContainer" class="charContainer"></div>
