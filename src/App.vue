@@ -22,6 +22,9 @@
         <div id="letters-stat-sourceStringContainer"></div>
         <div id="letters-stat-resultTableContainer" class="charContainer"></div>
       </div>
+      <div v-if="!rev && inputString.length > 0">
+        <a :href="`https://abjad.ganjoor.net?q=` + inputString ">پیوند به این جستجو</a>
+      </div>
       <button
         v-if="returnUrl != null"
         type="button"
