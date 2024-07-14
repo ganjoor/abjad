@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div align="center">
-      <img alt="محاسبه‌گر ابجد" src="./assets/logo.png" />
+      <a href="https://abjad.ganjoor.net"><img alt="محاسبه‌گر ابجد" src="./assets/logo.png" /></a>
     </div>
     <div v-if="!rev" align="center">
       <input
