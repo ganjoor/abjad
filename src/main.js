@@ -17,7 +17,7 @@ var router = new VueRouter({
 Vue.use(TrackingPlugin, {
   id: "1",
   status: "",
-  debug: true, // optional
+  debug: false, // optional
   router // optional
 });
 

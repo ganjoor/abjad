@@ -10,7 +10,7 @@
         placeholder="متن را اینجا وارد کنید"
         size="50"
       />
-      <div class="result-section">
+      <div class="result-section" v-if="inputString != null">
         <p>{{ persianizeNumerals(calc(inputString).n.toString()) }}</p>
         <p>{{ calc(inputString).desc }}</p>
       </div>
@@ -22,7 +22,7 @@
         <div id="letters-stat-sourceStringContainer"></div>
         <div id="letters-stat-resultTableContainer" class="charContainer"></div>
       </div>
-      <div v-if="!rev && inputString.length > 0">
+      <div v-if="!rev && inputString != null && inputString.length > 0">
         <a :href="`https://abjad.ganjoor.net?q=` + inputString ">پیوند به این جستجو</a>
       </div>
       <button
